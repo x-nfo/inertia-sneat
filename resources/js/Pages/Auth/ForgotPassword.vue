@@ -4,7 +4,7 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 
 defineProps({
     status: {
@@ -25,18 +25,17 @@ const submit = () => {
     <GuestLayout>
         <Head title="Forgot Password" />
 
-        <div class="mb-4 text-sm text-gray-600">
-            <h4 class="mb-2">Forgot Password</h4>
-            Forgot your password? No problem. Just let us know your email
-            address and we will email you a password reset link that will allow
-            you to choose a new one.
-        </div>
+        <h4 class="mb-2">Forgot Password? 🔒</h4>
+        <p class="mb-4">
+            Enter your email and we'll send you instructions to reset your
+            password
+        </p>
 
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
             {{ status }}
         </div>
 
-        <form @submit.prevent="submit">
+        <form @submit.prevent="submit" class="mb-3">
             <div>
                 <InputLabel for="email" value="Email" />
 
@@ -48,6 +47,7 @@ const submit = () => {
                     required
                     autofocus
                     autocomplete="username"
+                    placeholder="Enter your email"
                 />
 
                 <InputError class="mt-2" :message="form.errors.email" />
@@ -59,9 +59,18 @@ const submit = () => {
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
-                    Email Password Reset Link
+                    Send Reset Link
                 </PrimaryButton>
             </div>
         </form>
+        <div class="text-center">
+            <Link
+                :href="route('login')"
+                class="d-flex align-items-center justify-content-center"
+            >
+                <i class="bx bx-chevron-left scaleX-n1-rtl bx-sm"></i>
+                Back to login
+            </Link>
+        </div>
     </GuestLayout>
 </template>
