@@ -104,7 +104,9 @@ onClickOutside(dropdown, () => (isShow.value = false));
                                         <span class="fw-medium d-block">{{
                                             $page.props.auth.user.name
                                         }}</span>
-                                        <small class="text-muted">Admin</small>
+                                        <small class="text-muted"
+                                            >{{ $page.props.auth.user }}
+                                        </small>
                                     </div>
                                 </div>
                             </a>
