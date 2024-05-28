@@ -1,6 +1,15 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+import { useDark, useToggle } from '@vueuse/core';
+
+const isDark = useDark({
+    selector: 'html',
+    attribute: 'class',
+    valueDark: 'dark-style',
+    valueLight: 'light-style',
+});
+const toggleDark = useToggle(isDark);
 </script>
 
 <template>
@@ -21,12 +30,14 @@ import ApplicationLogo from '@/Components/ApplicationLogo.vue';
         </div>
     </div>
 
-    <div class="buy-now">
+    <div class="buy-now d-flex gap-2">
         <a
             href="https://themeselection.com/item/sneat-bootstrap-html-admin-template/"
             target="_blank"
             class="btn btn-danger btn-buy-now"
             >Upgrade to Pro</a
         >
+
+        <button class="btn btn-primary" @click="toggleDark()">Dark Mode</button>
     </div>
 </template>
