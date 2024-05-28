@@ -37,58 +37,77 @@ const submit = () => {
             {{ status }}
         </div>
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="email" value="Email" />
+        <!-- /Logo -->
+        <h4 class="mb-2">Welcome to Sneat! 👋</h4>
+        <p class="mb-4">
+            Please sign-in to your account and start the adventure
+        </p>
+
+        <form @submit.prevent="submit" class="mb-3">
+            <div class="mb-3">
+                <InputLabel for="email" value="Email or Username" />
 
                 <TextInput
                     id="email"
                     type="email"
-                    class="mt-1 block w-full"
                     v-model="form.email"
                     required
                     autofocus
                     autocomplete="username"
+                    placeholder="Enter your email or username"
                 />
 
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+            <div class="mb-3 form-password-toggle">
+                <div class="d-flex justify-content-between">
+                    <InputLabel for="password" value="Password" />
+                    <Link
+                        v-if="canResetPassword"
+                        :href="route('password.request')"
+                        class=""
+                    >
+                        <small>Forgot your password?</small>
+                    </Link>
+                </div>
 
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="current-password"
-                />
+                <div class="input-group input-group-merge">
+                    <TextInput
+                        id="password"
+                        type="password"
+                        v-model="form.password"
+                        required
+                        autocomplete="current-password"
+                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                    />
 
-                <InputError class="mt-2" :message="form.errors.password" />
+                    <InputError class="mt-2" :message="form.errors.password" />
+                </div>
             </div>
 
-            <div class="block mt-4">
-                <label class="flex items-center">
+            <div class="mb-3">
+                <label class="form-check">
                     <Checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="ms-2 text-sm text-gray-600">Remember me</span>
+                    <span class="">Remember me</span>
                 </label>
             </div>
 
             <div class="flex items-center justify-end mt-4">
-                <Link
-                    v-if="canResetPassword"
-                    :href="route('password.request')"
-                    class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                <PrimaryButton
+                    class="d-grid w-100"
+                    :class="{ 'opacity-25': form.processing }"
+                    :disabled="form.processing"
                 >
-                    Forgot your password?
-                </Link>
-
-                <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Log in
+                    Sign in
                 </PrimaryButton>
             </div>
         </form>
+        <p class="text-center">
+            <span>New on our platform?</span>
+            <Link :href="route('register')">
+                <span> Create an account</span>
+            </Link>
+        </p>
     </GuestLayout>
 </template>
