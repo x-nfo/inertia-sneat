@@ -61,29 +61,27 @@ const submit = () => {
             </div>
 
             <div class="mb-3 form-password-toggle">
-                <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-between align-items-center">
                     <InputLabel for="password" value="Password" />
                     <Link
                         v-if="canResetPassword"
                         :href="route('password.request')"
-                        class=""
+                        class="mb-1"
                     >
                         <small>Forgot your password?</small>
                     </Link>
                 </div>
 
-                <div class="input-group input-group-merge">
-                    <TextInput
-                        id="password"
-                        type="password"
-                        v-model="form.password"
-                        required
-                        autocomplete="current-password"
-                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                    />
+                <TextInput
+                    id="password"
+                    type="password"
+                    v-model="form.password"
+                    required
+                    autocomplete="current-password"
+                    placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                />
 
-                    <InputError class="mt-2" :message="form.errors.password" />
-                </div>
+                <InputError class="mt-2" :message="form.errors.password" />
             </div>
 
             <div class="mb-3">

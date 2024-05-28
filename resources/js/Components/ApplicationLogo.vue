@@ -1,7 +1,18 @@
+<script setup>
+import { Link } from '@inertiajs/vue3';
+
+const props = defineProps({
+    position: {
+        type: String,
+        default: 'center',
+    },
+});
+</script>
+
 <template>
     <!-- Logo -->
-    <div class="app-brand justify-content-center">
-        <a href="index.html" class="app-brand-link gap-2">
+    <div class="app-brand" :class="`justify-content-${props.position}`">
+        <Link :href="route('dashboard')" class="app-brand-link gap-2">
             <span class="app-brand-logo demo">
                 <svg
                     width="25"
@@ -97,6 +108,8 @@
                 </svg>
             </span>
             <span class="app-brand-text demo text-body fw-bold">Sneat</span>
-        </a>
+        </Link>
+
+        <slot />
     </div>
 </template>

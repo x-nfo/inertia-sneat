@@ -37,7 +37,5 @@ const toggleDark = useToggle(isDark);
             class="btn btn-danger btn-buy-now"
             >Upgrade to Pro</a
         >
-
-        <button class="btn btn-primary" @click="toggleDark()">Dark Mode</button>
     </div>
 </template>
