@@ -1,8 +1,10 @@
 <script setup>
 import { ref } from 'vue';
 import ApplicationLogo from './ApplicationLogo.vue';
+import { Link } from '@inertiajs/vue3';
 
 const isOpen = ref(false);
+const isActive = ref(false);
 </script>
 
 <template>
@@ -24,13 +26,45 @@ const isOpen = ref(false);
 
         <ul class="menu-inner py-1">
             <!-- Dashboards -->
-            <li class="menu-item active open">
-                <a href="javascript:void(0);" class="menu-link">
+            <li
+                class="menu-item"
+                :class="{
+                    active: route().current('dashboard'),
+                }"
+                @click="isActive = true"
+            >
+                <Link class="menu-link" :href="route('dashboard')">
                     <i class="menu-icon tf-icons bx bx-home-circle"></i>
                     <div data-i18n="Dashboards">Dashboards</div>
-                </a>
+                </Link>
             </li>
 
+            <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Apps &amp; Pages</span>
+            </li>
+            <!-- Apps -->
+            <li
+                class="menu-item"
+                :class="{
+                    active: route().current('profile.edit'),
+                }"
+            >
+                <Link :href="route('profile.edit')" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-envelope"></i>
+                    <div>Profile</div>
+                </Link>
+            </li>
+            <!-- Components -->
+            <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Components</span>
+            </li>
+            <!-- Cards -->
+            <li class="menu-item">
+                <a href="cards-basic.html" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-collection"></i>
+                    <div data-i18n="Basic">Cards</div>
+                </a>
+            </li>
             <!-- Front Pages -->
             <li
                 class="menu-item"
@@ -40,11 +74,6 @@ const isOpen = ref(false);
                 <a class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bx-store"></i>
                     <div data-i18n="Front Pages">Front Pages</div>
-                    <div
-                        class="badge bg-label-primary fs-tiny rounded-pill ms-auto"
-                    >
-                        Pro
-                    </div>
                 </a>
                 <ul class="menu-sub">
                     <li class="menu-item">
@@ -95,36 +124,6 @@ const isOpen = ref(false);
                 </ul>
             </li>
 
-            <li class="menu-header small text-uppercase">
-                <span class="menu-header-text">Apps &amp; Pages</span>
-            </li>
-            <!-- Apps -->
-            <li class="menu-item">
-                <a
-                    href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/html/vertical-menu-template/app-email.html"
-                    target="_blank"
-                    class="menu-link"
-                >
-                    <i class="menu-icon tf-icons bx bx-envelope"></i>
-                    <div data-i18n="Email">Email</div>
-                    <div
-                        class="badge bg-label-primary fs-tiny rounded-pill ms-auto"
-                    >
-                        Pro
-                    </div>
-                </a>
-            </li>
-            <!-- Components -->
-            <li class="menu-header small text-uppercase">
-                <span class="menu-header-text">Components</span>
-            </li>
-            <!-- Cards -->
-            <li class="menu-item">
-                <a href="cards-basic.html" class="menu-link">
-                    <i class="menu-icon tf-icons bx bx-collection"></i>
-                    <div data-i18n="Basic">Cards</div>
-                </a>
-            </li>
             <!-- User interface -->
             <li
                 class="menu-item"

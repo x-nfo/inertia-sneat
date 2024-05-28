@@ -65,7 +65,7 @@ onUnmounted(() => {
                 </h5>
             </template>
             <template #body>
-                <p class="text-sm">
+                <p class="text-sm text-muted">
                     Once your account is deleted, all of its resources and data
                     will be permanently deleted. Please enter your password to
                     confirm you would like to permanently delete your account.
