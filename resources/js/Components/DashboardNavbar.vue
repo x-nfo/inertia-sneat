@@ -102,10 +102,13 @@ onClickOutside(dropdown, () => (isShow.value = false));
                                     </div>
                                     <div class="flex-grow-1">
                                         <span class="fw-medium d-block">{{
-                                            $page.props.auth.user.name
+                                            $page.props.auth.user.name.slice(
+                                                0,
+                                                12
+                                            )
                                         }}</span>
                                         <small class="text-muted"
-                                            >{{ $page.props.auth.user }}
+                                            >{{ $page.props.auth.role }}
                                         </small>
                                     </div>
                                 </div>
