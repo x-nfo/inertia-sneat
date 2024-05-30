@@ -6,6 +6,8 @@ import { usePermissions } from '@/Composables/UsePermissions';
 
 const isOpen = ref(false);
 const isActive = ref(false);
+
+const { can } = usePermissions();
 </script>
 
 <template>
@@ -55,7 +57,7 @@ const isActive = ref(false);
             </li>
 
             <li
-                v-show="usePermissions('read_user')"
+                v-show="can('read_user')"
                 class="menu-item"
                 :class="{
                     active: route().current('user.index'),
@@ -68,7 +70,7 @@ const isActive = ref(false);
             </li>
 
             <li
-                v-show="usePermissions('delete_user')"
+                v-show="can('read_role', 'read_permission')"
                 class="menu-item"
                 :class="{ open: isOpen }"
                 @click="isOpen = !isOpen"
@@ -78,7 +80,7 @@ const isActive = ref(false);
                     <div>Roles & Permissions</div>
                 </a>
                 <ul class="menu-sub">
-                    <li class="menu-item">
+                    <li class="menu-item" v-show="can('read_role')">
                         <a
                             href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/html/front-pages/landing-page.html"
                             class="menu-link"
@@ -87,7 +89,7 @@ const isActive = ref(false);
                             <div>Roles</div>
                         </a>
                     </li>
-                    <li class="menu-item">
+                    <li class="menu-item" v-show="can('read_permission')">
                         <a
                             href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/html/front-pages/pricing-page.html"
                             class="menu-link"

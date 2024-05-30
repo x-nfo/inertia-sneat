@@ -75,10 +75,11 @@ const getBadgeClasses = (roleName) => {
 
 const toggleOffcanvas = () => (data.createModal = !data.createModal);
 
-console.log(data.createModal);
+const { can } = usePermissions();
 </script>
 
 <template>
+    <Head title="User" />
     <AuthenticatedLayout>
         <!-- Create new record -->
         <!-- Create new record -->
@@ -127,7 +128,7 @@ console.log(data.createModal);
                             <td>{{ user.created_at }}</td>
                             <td class="d-flex">
                                 <div
-                                    v-show="usePermissions('read_user')"
+                                    v-show="can('read_user')"
                                     class="btn btn-sm btn-icon dropdown-toggle hide-arrow"
                                 >
                                     <i
@@ -135,14 +136,14 @@ console.log(data.createModal);
                                     ></i>
                                 </div>
                                 <div
-                                    v-show="usePermissions('update_user')"
+                                    v-show="can('update_user')"
                                     class="btn btn-sm btn-icon"
                                 >
                                     <i class="bx bx-edit"></i>
                                 </div>
 
                                 <div
-                                    v-show="usePermissions('delete_user')"
+                                    v-show="can('delete_user')"
                                     class="btn btn-sm btn-icon delete-record"
                                 >
                                     <i class="bx bx-trash"></i>
