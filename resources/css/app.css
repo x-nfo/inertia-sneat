@@ -1,3 +1,5 @@
+/* Dark Mode */
+
 .dark-style body {
     background: #232333;
 }
@@ -80,14 +82,11 @@
     background-color: none;
 }
 
-.dark-style .navbar .bx {
-    color: #a3a4cc;
-}
-
-.dark-style .nav-link {
-    color: #a3a4cc;
-}
-.dark-style .dropdown-item {
+.dark-style .navbar .bx,
+.dark-style .nav-link,
+.dark-style .dropdown-item,
+.dark-style .table th,
+.dark-style .table .bx {
     color: #a3a4cc;
 }
 
@@ -118,6 +117,46 @@
 .dark-style .modal-backdrop {
     background: #000;
 }
+
+.dark-style .table {
+    --bs-table-color: #a3a4cc;
+    --bs-table-border-color: #444564;
+}
+
+.dark-style .bg-label-success {
+    background-color: #36483f !important;
+    color: #71dd37 !important;
+}
+
+.dark-style .bg-label-warning {
+    background-color: #4d4036 !important;
+    color: #ffab00 !important;
+}
+
+.dark-style .bg-label-primary {
+    background-color: #35365f !important;
+    color: #696cff !important;
+}
+
+.dark-style .app-brand .layout-menu-toggle {
+    border: 7px solid #232333;
+}
+
+.dark-style .offcanvas {
+    --bs-offcanvas-bg: #2b2c40;
+    --bs-offcanvas-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.25);
+    --bs-offcanvas-border-color: #444564;
+}
+
+.dark-style .input-group-text {
+    background-color: #2b2c40;
+    border: var(--bs-border-width) solid #696a9b;
+}
+
+.dark-style .border-bottom {
+    border-bottom: 1px solid #444564 !important;
+}
+/* Light Mode */
 
 .modal-backdrop {
     background-color: rgba(44, 44, 44, 0.219);

@@ -25,7 +25,7 @@ defineProps({
             </h2>
         </template>
 
-        <div class="py-5">
+        <div class="py-3">
             <div class="d-flex flex-column card">
                 <div class="card-body">
                     <UpdateProfileInformationForm

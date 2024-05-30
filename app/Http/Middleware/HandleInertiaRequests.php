@@ -32,11 +32,37 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
+            
             'auth' => [
                 'user' => $request->user(),
-                'can' => $request->user() ? $request->user()->getPermissionArray() : [],
+                'permissions' => $request->user() ? $request->user()->getPermissionArray() : [],
+                'isSuperAdmin' => $request->user() ? $request->user()->hasRole('superadmin') : false,
                 'role' => $request->user() ? $request->user()->getRoleNames()->first() : '-',
             ],
+             'flashMessage' => [
+                'success' => $request->session()->get('success'),
+                  'error' => $request->session()->get('error'),
+            ],
+            'app' => [
+                'name' => config('app.name'),
+                'perpage' => [
+                    ['label' => '5', 'value' => 5],
+                    ['label' => '10', 'value' => 10],
+                    ['label' => '20', 'value' => 20],
+                    ['label' => '50', 'value' => 50],
+                    ['label' => '100', 'value' => 100],
+                ],
+            ],
+            'locale' => function () {                
+                if(session()->has('locale')) {
+                    app()->setLocale(session('locale'));
+                }
+                return app()->getLocale();
+            },
+            'language' => function () {
+                $lang = __('app');
+                return response()->json($lang);
+            },
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),

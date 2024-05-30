@@ -50,6 +50,36 @@ onClickOutside(dropdown, () => (isShow.value = false));
             <!-- /Search -->
 
             <ul class="navbar-nav flex-row align-items-center ms-auto">
+                <!-- Language -->
+                <li class="nav-item dropdown-language dropdown me-2 me-xl-0">
+                    <a
+                        class="nav-link dropdown-toggle hide-arrow"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                    >
+                        <i class="bx bx-globe bx-sm"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a
+                                class="dropdown-item active"
+                                data-language="en"
+                                data-text-direction="ltr"
+                            >
+                                <span class="align-middle">English</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                data-language="fr"
+                                data-text-direction="ltr"
+                            >
+                                <span class="align-middle">French</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <!-- Theme Switcher -->
 
                 <li

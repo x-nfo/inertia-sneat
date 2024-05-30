@@ -46,11 +46,26 @@ class User extends Authenticatable
         ];
     }
 
+    public function getCreatedAtAttribute()
+    {
+        return date('d F Y, H:i', strtotime($this->attributes['created_at']));
+    }
+
+    public function getUpdatedAtAttribute()
+    {
+        return date('d-m-Y H:i', strtotime($this->attributes['updated_at']));
+    }
+
+    public function getEmailVerifiedAtAttribute()
+    {
+        return $this->attributes['email_verified_at'] == null ? null:date('d-m-Y H:i', strtotime($this->attributes['email_verified_at']));
+    }
+
     public function getPermissionArray()
     {
-        return $this->getAllPermissions()->mapWithKeys(function ($pr) {
-            return [$pr['name'] => true];
-        });
+        return $this->getAllPermissions()->mapWithKeys(function ($permission) {
+            return [$permission->name => true];
+        })->toArray();
     }
 
 

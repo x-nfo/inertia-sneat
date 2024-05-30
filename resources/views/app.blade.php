@@ -49,7 +49,11 @@
         @inertiaHead
     </head>
     <body>
+
         @inertia
+
+        <script src="{{ asset('../../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
+        <script src="{{ asset('../../assets/vendor/js/menu.js') }}"></script>
 
 
         <!-- Main JS -->

@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\PermissionRegistrar;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class RoleSeeder extends Seeder
 {
@@ -13,24 +14,33 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        $superadmin = Role::create(['name' => 'Super Admin', 'guard_name' => 'web']);
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+
+        $superadmin = Role::create(['name' => 'superadmin', 'guard_name' => 'web']);
+
+        // $superadmin->givePermissionTo([
+        //     'read_user', 'create_user', 'update_user', 'delete_user',
+        //     'read_role', 'create_role', 'update_role', 'delete_role',
+        //     'read_permission', 'create_permission', 'update_permission', 'delete_permission',
+
+        // ]);
         
-        $admin = Role::create(['name' => 'Admin', 'guard_name' => 'web']);
+        $admin = Role::create(['name' => 'admin', 'guard_name' => 'web']);
 
-        $admin->givePermissionTo([ 'delete user',
-            'update user',
-            'read user',
-            'create user',
-            'read role',
-            'read permission',]);
+        $admin->givePermissionTo([ 'delete_user',
+            'update_user',
+            'read_user',
+            'create_user',
+            'read_role',
+            'read_permission',]);
 
-        $operator = Role::create(['name' => 'Operator', 'guard_name' => 'web']);
+        $operator = Role::create(['name' => 'operator', 'guard_name' => 'web']);
 
         $operator->givePermissionTo([
-            'read user',
-            'create user',
-            'read role',
-            'read permission',
+            'read_user',
+            'create_user',
+            'read_role',
+            'read_permission',
         ]);
     }
 }

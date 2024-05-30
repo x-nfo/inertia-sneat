@@ -15,14 +15,14 @@ class UserSeeder extends Seeder
     {
         $superadmin = User::factory()->create(['email' => 'superadmin@gmail.com']);
 
-        $superadmin->assignRole('Super Admin');
+        $superadmin->assignRole('superadmin');
 
         $admin = User::factory()->create([ 'email' => 'admin@gmail.com']);
 
-        $admin->assignRole('Admin');
+        $admin->assignRole('admin');
 
         $operator = User::factory()->create(['email' => 'operator@gmail.com']);
 
-        $operator->assignRole('Operator');
+        $operator->assignRole('operator');
     }
 }

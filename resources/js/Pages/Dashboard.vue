@@ -7,9 +7,11 @@ import { Head } from '@inertiajs/vue3';
     <Head title="Dashboard" />
 
     <AuthenticatedLayout>
-        <div class="my-5 card">
+        <div class="my-3 card">
             <div class="card-body">
-                <div class="p-6 text-gray-900">You're logged in!</div>
+                <div class="p-6 text-gray-900">
+                    <p>You're logged in!</p>
+                </div>
             </div>
         </div>
     </AuthenticatedLayout>
