@@ -1,13 +1,14 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import DashboardAside from '@/Components/DashboardAside.vue';
 import DashboardNavbar from '@/Components/DashboardNavbar.vue';
+import Swal from 'sweetalert2';
 
 const showingNavigationDropdown = ref(false);
 import { useDark, useToggle } from '@vueuse/core';
@@ -21,6 +22,48 @@ const isDark = useDark({
 const toggleDark = useToggle(isDark);
 
 let getFullYear = new Date().getFullYear();
+
+watchEffect(() => {
+    let flashMessage = usePage().props.flashMessage;
+
+    if (flashMessage.success) {
+        Swal.fire({
+            html: flashMessage.success,
+            icon: 'success',
+            buttonsStyling: false,
+            confirmButtonText: 'Ok, got it!',
+            customClass: {
+                confirmButton: 'btn btn-primary',
+            },
+        });
+    }
+
+    if (flashMessage.error || Object.keys(usePage().props.errors).length > 0) {
+        if (flashMessage.error) {
+            Swal.fire({
+                title: 'Server Error',
+                html: flashMessage.error,
+                icon: 'error',
+                buttonsStyling: false,
+                confirmButtonText: 'Ok, got it!',
+                customClass: {
+                    confirmButton: 'btn btn-danger',
+                },
+            });
+        } else {
+            Swal.fire({
+                title: 'Validation Error',
+                html: Object.keys(usePage().props.errors),
+                icon: 'error',
+                buttonsStyling: false,
+                confirmButtonText: 'Ok, got it!',
+                customClass: {
+                    confirmButton: 'btn btn-danger',
+                },
+            });
+        }
+    }
+});
 </script>
 
 <template>

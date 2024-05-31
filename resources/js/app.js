@@ -22,14 +22,6 @@ createInertiaApp({
             .use(ZiggyVue)
             .mixin({
                 methods: {
-                    // can: function (permissions) {
-                    //     var allPermissions = usePage().props.auth.can;
-                    //     var hasPermission = false;
-                    //     permissions.forEach(function (item) {
-                    //         if (allPermissions[item]) hasPermission = true;
-                    //     });
-                    //     return hasPermission;
-                    // },
                     lang: function () {
                         return usePage().props.language.original;
                     },

@@ -1,7 +1,6 @@
 <script setup>
-import { Link } from '@inertiajs/vue3';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-import { useDark, useToggle } from '@vueuse/core';
+import { useDark } from '@vueuse/core';
 
 const isDark = useDark({
     selector: 'html',
@@ -9,7 +8,6 @@ const isDark = useDark({
     valueDark: 'dark-style',
     valueLight: 'light-style',
 });
-const toggleDark = useToggle(isDark);
 </script>
 
 <template>

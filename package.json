@@ -22,6 +22,7 @@
         "lodash": "^4.17.21",
         "perfect-scrollbar": "^1.5.5",
         "sass": "^1.77.2",
-        "sass-loader": "^14.2.1"
+        "sass-loader": "^14.2.1",
+        "sweetalert2": "^11.11.0"
     }
 }

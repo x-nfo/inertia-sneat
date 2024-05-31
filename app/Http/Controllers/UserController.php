@@ -30,9 +30,8 @@ class UserController extends Controller implements HasMiddleware
         ];
     }
 
-     public function index(UserIndexRequest $request)
+    public function index(UserIndexRequest $request)
     {
-    //    Gate::allowIf(fn (User $user) => $user->hasRole('superadmin')); 
 
         $users = User::query();
         if ($request->has('search')) {

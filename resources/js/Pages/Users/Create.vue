@@ -1,122 +1,150 @@
 <script setup>
-import { ref, watchEffect } from 'vue';
+import { onMounted, onUnmounted, ref, watchEffect } from 'vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+import InputLabel from '@/Components/InputLabel.vue';
+import InputError from '@/Components/InputError.vue';
+import TextInput from '@/Components/TextInput.vue';
+import SelectInput from '@/Components/SelectInput.vue';
+import { useForm } from '@inertiajs/vue3';
+import Offcanvas from '@/Components/Offcanvas.vue';
+import { useOffcanvas } from '@/Composables/UseOffcanvas';
 
-const emit = defineEmits(['openOffcanvas']);
+const offcanvas = ref(null);
+onMounted(() => {
+    offcanvas.value = useOffcanvas('#createUser');
+});
+
 const props = defineProps({
-    isOpen: {
-        type: Boolean,
-        default: false,
-    },
+    roles: Object,
+});
+
+const form = useForm({
+    name: '',
+    email: '',
+    password: '',
+    password_confirmation: '',
+    role: 'operator',
+});
+
+const openOffcanvas = () => {
+    offcanvas.value.show();
+
+    form.reset();
+};
+
+const closeOffcanvas = () => {
+    offcanvas.value.hide();
+    form.reset();
+};
+
+const createNewUser = () => {
+    form.post(route('user.store'), {
+        preserveScroll: true,
+        onSuccess: () => {
+            closeOffcanvas();
+            form.reset();
+        },
+        onFinish: () => form.reset(),
+    });
+};
+
+const roles = props.roles?.map((role) => ({
+    label: role.name,
+    value: role.name,
+}));
+
+onUnmounted(() => {
+    closeOffcanvas();
 });
 </script>
 
 <template>
     <!-- Button -->
-    <div class="btn create-new btn-primary" @click="emit('openOffcanvas')">
+    <PrimaryButton @click="openOffcanvas">
         <i class="bx bx-plus me-sm-1"></i>
         <span class="d-none d-sm-inline-block">Add New Record</span>
-    </div>
-
+    </PrimaryButton>
     <!-- End of Button -->
 
-    <div
-        class="offcanvas offcanvas-end"
-        :class="{ show: props.isOpen }"
-        id="add-new-record"
-        aria-modal="true"
-        role="dialog"
-    >
-        <div class="offcanvas-header border-bottom">
-            <h5 class="offcanvas-title" id="exampleModalLabel">New Record</h5>
-            <button
-                type="button"
-                class="btn-close text-reset"
-                @click="emit('openOffcanvas')"
-                aria-label="Close"
-            ></button>
-        </div>
-        <div class="offcanvas-body flex-grow-1">
-            <form
-                class="add-new-record pt-0 row g-2 fv-plugins-bootstrap5 fv-plugins-framework"
-                novalidate="novalidate"
-            >
-                <div class="col-sm-12 fv-plugins-icon-container">
-                    <label class="form-label" for="basicFullname"
-                        >Full Name</label
-                    >
-                    <div class="input-group input-group-merge has-validation">
-                        <span id="basicFullname2" class="input-group-text"
-                            ><i class="bx bx-user"></i
-                        ></span>
-                        <input
-                            type="text"
-                            id="basicFullname"
-                            class="form-control dt-full-name"
-                            name="basicFullname"
-                            placeholder="John Doe"
-                            aria-label="John Doe"
-                            aria-describedby="basicFullname2"
-                        />
-                    </div>
-                    <div
-                        class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"
-                    ></div>
-                </div>
+    <Offcanvas id="createUser" title="New Record" @close="closeOffcanvas">
+        <div
+            class="add-new-record pt-0 row g-2 fv-plugins-bootstrap5 fv-plugins-framework"
+        >
+            <div class="col-sm-12 fv-plugins-icon-container">
+                <InputLabel for="name" value="Full Name" :required="true" />
+                <TextInput
+                    v-model="form.name"
+                    id="name"
+                    type="text"
+                    placeholder="Full Name"
+                />
+                <InputError :message="form.errors.name" />
+            </div>
 
-                <div class="col-sm-12 fv-plugins-icon-container">
-                    <label class="form-label" for="basicEmail">Email</label>
-                    <div class="input-group input-group-merge has-validation">
-                        <span class="input-group-text"
-                            ><i class="bx bx-envelope"></i
-                        ></span>
-                        <input
-                            type="text"
-                            id="basicEmail"
-                            name="basicEmail"
-                            class="form-control dt-email"
-                            placeholder="john.doe@example.com"
-                            aria-label="john.doe@example.com"
-                        />
-                    </div>
-                </div>
+            <div class="mb-3 col-sm-12 fv-plugins-icon-container">
+                <InputLabel for="email" value="Email" :required="true" />
+                <TextInput
+                    v-model="form.email"
+                    id="email"
+                    type="email"
+                    placeholder="example@domain.com"
+                />
+                <InputError :message="form.errors.email" />
+            </div>
 
-                <div class="col-sm-12 fv-plugins-icon-container">
-                    <label class="form-label" for="basicSalary">Role</label>
-                    <div class="input-group input-group-merge has-validation">
-                        <span id="basicSalary2" class="input-group-text"
-                            ><i class="bx bx-dollar"></i
-                        ></span>
-                        <input
-                            type="number"
-                            id="basicSalary"
-                            name="basicSalary"
-                            class="form-control dt-salary"
-                            placeholder="12000"
-                            aria-label="12000"
-                            aria-describedby="basicSalary2"
-                        />
-                    </div>
-                    <div
-                        class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"
-                    ></div>
-                </div>
-                <div class="col-sm-12">
-                    <button
-                        type="submit"
-                        class="btn btn-primary data-submit me-sm-3 me-1"
-                    >
-                        Submit
-                    </button>
-                    <button
-                        type="reset"
-                        class="btn btn-outline-secondary"
-                        @click="emit('openOffcanvas')"
-                    >
-                        Cancel
-                    </button>
-                </div>
-                <input type="hidden" />
-            </form>
+            <div class="mb-3 col-sm-12 fv-plugins-icon-container">
+                <InputLabel for="password" value="Password" :required="true" />
+                <TextInput
+                    v-model="form.password"
+                    id="password"
+                    type="password"
+                    placeholder="Password"
+                />
+                <InputError :message="form.errors.password" />
+            </div>
+            <div class="mb-3 col-sm-12 fv-plugins-icon-container">
+                <InputLabel
+                    for="password_confirmation"
+                    value="Password Confirmation"
+                    :required="true"
+                />
+                <TextInput
+                    v-model="form.password_confirmation"
+                    id="password_confirmation"
+                    type="password"
+                    placeholder="Password Confirmation"
+                />
+                <InputError :message="form.errors.password" />
+            </div>
+            <div class="mb-3 col-sm-12 fv-plugins-icon-container">
+                <InputLabel for="role" value="Role" :isRequired="true" />
+                <SelectInput
+                    id="role"
+                    class="mt-1 block w-full"
+                    v-model="form.role"
+                    required
+                    :dataSet="roles"
+                >
+                </SelectInput>
+                <InputError class="mt-2" :message="form.errors.role" />
+            </div>
+            <div class="mb-3 d-flex gap-2 col-sm-12">
+                <PrimaryButton
+                    type="submit"
+                    @click="createNewUser"
+                    :disabled="form.processing"
+                    :class="{ 'opacity-25': form.processing }"
+                >
+                    Submit
+                </PrimaryButton>
+                <button
+                    type="reset"
+                    class="btn btn-outline-secondary"
+                    @click="closeOffcanvas"
+                >
+                    Cancel
+                </button>
+            </div>
         </div>
-    </div>
+    </Offcanvas>
 </template>
