@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { useDark, useToggle } from '@vueuse/core';
 import { Link } from '@inertiajs/vue3';
+import DashboardDropdown from '@/Components/DashboardDropdown.vue';
 
 const isDark = useDark({
     selector: 'html',
@@ -47,19 +48,12 @@ let isShow = ref(false);
 
             <ul class="navbar-nav flex-row align-items-center ms-auto">
                 <!-- Language -->
-                <li class="nav-item dropdown-language dropdown me-2 me-xl-0">
-                    <a
-                        class="nav-link dropdown-toggle hide-arrow"
-                        :class="{ show: isShow }"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                    >
+
+                <DashboardDropdown>
+                    <template #trigger>
                         <i class="bx bx-globe bx-sm"></i>
-                    </a>
-                    <ul
-                        class="dropdown-menu dropdown-menu-end"
-                        :class="{ show: isShow }"
-                    >
+                    </template>
+                    <template #menu-item>
                         <li>
                             <a
                                 class="dropdown-item active"
@@ -78,9 +72,8 @@ let isShow = ref(false);
                                 <span class="align-middle">French</span>
                             </a>
                         </li>
-                    </ul>
-                </li>
-                <!-- Theme Switcher -->
+                    </template>
+                </DashboardDropdown>
 
                 <li
                     role="button"
@@ -99,25 +92,17 @@ let isShow = ref(false);
                 <!-- End of Theme Switcher -->
 
                 <!-- User -->
-                <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                    <a
-                        class="nav-link dropdown-toggle hide-arrow"
-                        :class="{ show: isShow }"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                    >
-                        <div class="avatar avatar-online">
+
+                <DashboardDropdown>
+                    <template #trigger
+                        ><div class="avatar avatar-online">
                             <img
                                 src="assets/img/avatars/1.png"
                                 alt=""
                                 class="w-px-40 h-auto rounded-circle"
-                            />
-                        </div>
-                    </a>
-                    <ul
-                        class="dropdown-menu dropdown-menu-end"
-                        :class="{ show: isShow }"
-                    >
+                            /></div
+                    ></template>
+                    <template #menu-item>
                         <li>
                             <a class="dropdown-item" href="#">
                                 <div class="d-flex">
@@ -195,8 +180,8 @@ let isShow = ref(false);
                                 <span class="align-middle">Log Out</span>
                             </Link>
                         </li>
-                    </ul>
-                </li>
+                    </template>
+                </DashboardDropdown>
                 <!--/ User -->
             </ul>
         </div>
