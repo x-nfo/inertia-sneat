@@ -39,7 +39,7 @@ watchEffect(() => {
         v-if="links.data.length != 0"
         class="d-flex justify-content-between perpage"
     >
-        <div>
+        <div class="dataTables_info">
             <span class="me-3">Show</span>
             <span class="">{{ links.from }}</span>
             <span class="mx-1"> -</span>
@@ -47,7 +47,10 @@ watchEffect(() => {
             <span class="mx-2"> of </span>
             <span>{{ links.total }}</span>
         </div>
-        <div v-if="links.links.length > 3">
+        <div
+            v-if="links.links.length > 3"
+            class="dataTables_paginate paging_simple_numbers"
+        >
             <ul class="pagination">
                 <li
                     class="paginate_button page-item"
