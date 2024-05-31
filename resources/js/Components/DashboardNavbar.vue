@@ -54,12 +54,16 @@ onClickOutside(dropdown, () => (isShow.value = false));
                 <li class="nav-item dropdown-language dropdown me-2 me-xl-0">
                     <a
                         class="nav-link dropdown-toggle hide-arrow"
+                        :class="{ show: isShow }"
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                     >
                         <i class="bx bx-globe bx-sm"></i>
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
+                    <ul
+                        class="dropdown-menu dropdown-menu-end"
+                        :class="{ show: isShow }"
+                    >
                         <li>
                             <a
                                 class="dropdown-item active"
@@ -103,7 +107,8 @@ onClickOutside(dropdown, () => (isShow.value = false));
                     <a
                         class="nav-link dropdown-toggle hide-arrow"
                         :class="{ show: isShow }"
-                        @click="isShow = true"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
                     >
                         <div class="avatar avatar-online">
                             <img

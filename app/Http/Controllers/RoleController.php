@@ -49,7 +49,7 @@ class RoleController extends Controller implements HasMiddleware
             $roles->where('name', '<>', 'superadmin');
         }
         $perPage = $request->has('perPage') ? $request->perPage : 10;
-        return Inertia::render('Role/Index', [
+        return Inertia::render('Roles/Index', [
             'title'         => __('app.label.role'),
             'filters'       => $request->all(['search', 'field', 'order']),
             'perPage'       => (int) $perPage,

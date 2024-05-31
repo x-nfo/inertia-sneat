@@ -43,7 +43,7 @@ class PermissionController extends Controller implements HasMiddleware
             $permissions->orderBy($request->field, $request->order);
         }
         $perPage = $request->has('perPage') ? $request->perPage : 10;
-        return Inertia::render('Permission/Index', [
+        return Inertia::render('Permissions/Index', [
             'title'         => __('app.label.permission'),
             'filters'       => $request->all(['search', 'field', 'order']),
             'perPage'       => (int) $perPage,

@@ -4,9 +4,6 @@ import ApplicationLogo from './ApplicationLogo.vue';
 import { Link } from '@inertiajs/vue3';
 import { usePermissions } from '@/Composables/UsePermissions';
 
-const isOpen = ref(false);
-const isActive = ref(false);
-
 const { can } = usePermissions();
 </script>
 
@@ -41,7 +38,37 @@ const { can } = usePermissions();
             </li>
 
             <li class="menu-header small text-uppercase">
-                <span class="menu-header-text">Apps &amp; Pages</span>
+                <span class="menu-header-text">Pages</span>
+            </li>
+            <!-- Apps -->
+
+            <li class="menu-item">
+                <Link
+                    method="post"
+                    as="link"
+                    :href="route('logout')"
+                    class="menu-link"
+                >
+                    <i class="menu-icon tf-icons bx bx-log-in-circle"></i>
+                    <div>Login</div>
+                </Link>
+            </li>
+
+            <li class="menu-item">
+                <Link :href="route('register')" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-user-plus"></i>
+                    <div>Register</div>
+                </Link>
+            </li>
+            <li class="menu-item">
+                <Link :href="route('password.request')" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-envelope"></i>
+                    <div>Forgot Password</div>
+                </Link>
+            </li>
+
+            <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Management</span>
             </li>
             <!-- Apps -->
             <li
@@ -51,7 +78,7 @@ const { can } = usePermissions();
                 }"
             >
                 <Link :href="route('profile.edit')" class="menu-link">
-                    <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
+                    <i class="menu-icon tf-icons bx bx-fingerprint"></i>
                     <div>Profile</div>
                 </Link>
             </li>
@@ -68,37 +95,29 @@ const { can } = usePermissions();
                     <div>Users</div>
                 </Link>
             </li>
-
             <li
-                v-show="can('read_role', 'read_permission')"
                 class="menu-item"
-                :class="{ open: isOpen }"
-                @click="isOpen = !isOpen"
+                v-show="can('read_role')"
+                :class="{
+                    active: route().current('role.index'),
+                }"
             >
-                <a class="menu-link menu-toggle">
+                <Link :href="route('role.index')" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-check-shield"></i>
-                    <div>Roles & Permissions</div>
-                </a>
-                <ul class="menu-sub">
-                    <li class="menu-item" v-show="can('read_role')">
-                        <a
-                            href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/html/front-pages/landing-page.html"
-                            class="menu-link"
-                            target="_blank"
-                        >
-                            <div>Roles</div>
-                        </a>
-                    </li>
-                    <li class="menu-item" v-show="can('read_permission')">
-                        <a
-                            href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/html/front-pages/pricing-page.html"
-                            class="menu-link"
-                            target="_blank"
-                        >
-                            <div data-i18n="Pricing">Permissions</div>
-                        </a>
-                    </li>
-                </ul>
+                    <div>Roles</div>
+                </Link>
+            </li>
+            <li
+                class="menu-item"
+                v-show="can('read_permission')"
+                :class="{
+                    active: route().current('permission.index'),
+                }"
+            >
+                <Link :href="route('permission.index')" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-lock-open-alt"></i>
+                    <div>Permissions</div>
+                </Link>
             </li>
         </ul>
     </aside>
