@@ -1,15 +1,41 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, router, usePage } from '@inertiajs/vue3';
-import { computed, ref, reactive, watch } from 'vue';
+import { reactive, watch, onMounted, onUnmounted } from 'vue';
 import { cloneDeep, debounce, pickBy } from 'lodash';
+import { usePermissions } from '@/Composables/UsePermissions';
+import { useOffcanvas } from '@/Composables/UseOffcanvas';
+import { useModal } from '@/Composables/UseModal';
+
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Checkbox from '@/Components/Checkbox.vue';
 import Pagination from '@/Components/Pagination.vue';
 import SearchBar from '@/Components/SearchBar.vue';
 import SelectInput from '@/Components/SelectInput.vue';
-
 import Create from './Create.vue';
-import { usePermissions } from '@/Composables/UsePermissions';
+import Edit from './Edit.vue';
+import Delete from './Delete.vue';
+import DeleteBulk from './DeleteBulk.vue';
+
+const modal = reactive({
+    isDeleteOpen: false,
+    isDeleteBulkOpen: false,
+    deleteId: null,
+    deleteBulkUser: null,
+});
+
+const offcanvas = reactive({
+    isCreateOpen: false,
+    isEditOpen: false,
+    createId: '',
+    editId: '',
+});
+
+onMounted(() => {
+    offcanvas.createId = useOffcanvas('#createUser');
+    offcanvas.editId = useOffcanvas('#editUser');
+    modal.deleteId = useModal('#deleteUser');
+    modal.deleteBulkUser = useModal('#deleteBulkUser');
+});
 
 const props = defineProps({
     users: Object,
@@ -76,6 +102,69 @@ const getBadgeClasses = (roleName) => {
 };
 
 const { can } = usePermissions();
+
+const openModal = (id) => {
+    switch (id) {
+        case 'delete':
+            modal.deleteId.show();
+            modal.isDeleteOpen = true;
+            break;
+        case 'deleteBulk':
+            modal.deleteBulkUser.show();
+            modal.isDeleteBulkOpen = true;
+            break;
+    }
+};
+
+const closeModal = (id) => {
+    switch (id) {
+        case 'delete':
+            modal.deleteId.hide();
+            modal.isDeleteOpen = false;
+            break;
+        case 'deleteBulk':
+            modal.deleteBulkUser.hide();
+            modal.isDeleteBulkOpen = false;
+            data.isMultiple = false;
+            data.selectedId = [];
+            break;
+    }
+};
+
+const openOffcanvas = (id) => {
+    switch (id) {
+        case 'create':
+            offcanvas.createId.show();
+            offcanvas.isCreateOpen = true;
+            break;
+        case 'edit':
+            offcanvas.editId.show();
+            offcanvas.isEditOpen = true;
+            break;
+    }
+};
+
+const closeOffcanvas = (id) => {
+    switch (id) {
+        case 'create':
+            offcanvas.createId.hide();
+            offcanvas.isCreateOpen = false;
+            break;
+        case 'edit':
+            offcanvas.editId.hide();
+            offcanvas.isEditOpen = false;
+            break;
+    }
+};
+
+onUnmounted(() => {
+    closeOffcanvas('create');
+    closeOffcanvas('edit');
+    closeModal('delete');
+    closeModal('deleteBulk');
+});
+
+console.log(data.selectedId.length);
 </script>
 
 <template>
@@ -107,15 +196,30 @@ const { can } = usePermissions();
                                 <!--end::Search-->
                             </div>
                             <div class="pt-md-0">
-                                <div class="btn-group flex-wrap">
-                                    <Create :roles="props.roles" />
-                                </div>
+                                <DeleteBulk
+                                    v-show="
+                                        data.selectedId.length != 0 &&
+                                        can(['delete_user'])
+                                    "
+                                    :show="modal.isDeleteBulkOpen"
+                                    :selectedId="data.selectedId"
+                                    @open="openModal('deleteBulk')"
+                                    @close="closeModal('deleteBulk')"
+                                />
+                                <Create
+                                    v-show="
+                                        data.selectedId.length == 0 &&
+                                        can(['create_user'])
+                                    "
+                                    :show="offcanvas.isCreateOpen"
+                                    :roles="props.roles"
+                                    @open="openOffcanvas('create')"
+                                    @close="closeOffcanvas('create')"
+                                />
                             </div>
                         </div>
                     </div>
-                    <table
-                        class="dt-row-grouping table dataTable dtr-column mb-3"
-                    >
+                    <table class="dt-row-grouping table dataTable dtr-column">
                         <thead>
                             <tr>
                                 <td>
@@ -235,19 +339,31 @@ const { can } = usePermissions();
                                             class="bx bx-dots-vertical-rounded me-2"
                                         ></i>
                                     </div>
-                                    <div
-                                        v-show="can('update_user')"
-                                        class="btn btn-sm btn-icon"
-                                    >
-                                        <i class="bx bx-edit"></i>
-                                    </div>
 
-                                    <div
+                                    <Edit
+                                        v-show="can('update_user')"
+                                        :show="offcanvas.isEditOpen"
+                                        :user="data?.user"
+                                        :roles="props.roles"
+                                        @open="
+                                            openOffcanvas('edit'),
+                                                (data.user = user)
+                                        "
+                                        @close="closeOffcanvas('edit')"
+                                    />
+
+                                    <Delete
                                         v-show="can('delete_user')"
-                                        class="btn btn-sm btn-icon delete-record"
-                                    >
-                                        <i class="bx bx-trash"></i>
-                                    </div>
+                                        :show="modal.isDeleteOpen"
+                                        :user="data?.user"
+                                        @open="
+                                            openModal(
+                                                'delete',
+                                                (data.user = user)
+                                            )
+                                        "
+                                        @close="closeModal('delete')"
+                                    />
                                 </td>
                             </tr>
                         </tbody>

@@ -37,7 +37,7 @@ watchEffect(() => {
 <template>
     <div
         v-if="links.data.length != 0"
-        class="d-flex justify-content-between perpage"
+        class="d-flex justify-content-between align-items-center perpage my-3"
     >
         <div class="dataTables_info">
             <span class="me-3">Show</span>

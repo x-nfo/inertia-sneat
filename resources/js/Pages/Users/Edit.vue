@@ -1,30 +1,31 @@
 <script setup>
+import { onMounted, onUnmounted, ref, watchEffect } from 'vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import InputError from '@/Components/InputError.vue';
 import TextInput from '@/Components/TextInput.vue';
 import SelectInput from '@/Components/SelectInput.vue';
-import Offcanvas from '@/Components/Offcanvas.vue';
 import { useForm } from '@inertiajs/vue3';
-import { watchEffect } from 'vue';
+import Offcanvas from '@/Components/Offcanvas.vue';
 
 const props = defineProps({
     show: Boolean,
+    user: Object,
     roles: Object,
 });
 
-const emit = defineEmits(['close', 'open']);
+const emit = defineEmits(['open', 'close']);
 
 const form = useForm({
     name: '',
     email: '',
     password: '',
     password_confirmation: '',
-    role: 'operator',
+    role: '',
 });
 
-const createNewUser = () => {
-    form.post(route('user.store'), {
+const update = () => {
+    form.put(route('user.update', props.user?.id), {
         preserveScroll: true,
         onSuccess: () => {
             emit('close');
@@ -36,6 +37,9 @@ const createNewUser = () => {
 
 watchEffect(() => {
     if (props.show) {
+        form.name = props.user?.name;
+        form.email = props.user?.email;
+        form.role = props.user?.roles == 0 ? '' : props.user?.roles[0].name;
         form.errors = {};
     }
 });
@@ -48,14 +52,11 @@ const roles = props.roles?.map((role) => ({
 
 <template>
     <div>
-        <!-- Button -->
-        <PrimaryButton @click="emit('open')">
-            <i class="bx bx-plus me-sm-1"></i>
-            <span class="d-none d-sm-inline-block">Add New Record</span>
-        </PrimaryButton>
-        <!-- End of Button -->
+        <div @click="emit('open')" class="btn btn-sm btn-icon">
+            <i class="bx bx-edit"></i>
+        </div>
 
-        <Offcanvas id="createUser" title="New Record" @close="emit('close')">
+        <Offcanvas id="editUser" title="Edit Record" @close="emit('close')">
             <div
                 class="add-new-record pt-0 row g-2 fv-plugins-bootstrap5 fv-plugins-framework"
             >
@@ -119,7 +120,7 @@ const roles = props.roles?.map((role) => ({
                 <div class="mb-3 d-flex gap-2 col-sm-12">
                     <PrimaryButton
                         type="submit"
-                        @click="createNewUser"
+                        @click="update"
                         :disabled="form.processing"
                         :class="{ 'opacity-25': form.processing }"
                     >

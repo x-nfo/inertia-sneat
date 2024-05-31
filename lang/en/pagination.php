@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'previous' => '<small class="me-2">Previous</small>',
-    'next' => '<small class="ms-2">Next</small>',
+    'previous' => '<smal">Previous</small>',
+    'next' => '<small">Next</smal>',
 
 ];
