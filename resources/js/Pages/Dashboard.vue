@@ -10,6 +10,7 @@ import { Head } from '@inertiajs/vue3';
         <div class="my-3 card">
             <div class="card-body">
                 <div class="p-6 text-gray-900">You're logged in!</div>
+                {{ $page.props.auth.permissions }}
             </div>
         </div>
     </AuthenticatedLayout>

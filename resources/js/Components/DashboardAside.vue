@@ -72,6 +72,7 @@ const { can } = usePermissions();
             </li>
             <!-- Apps -->
             <li
+                v-show="can('read_profile')"
                 class="menu-item"
                 :class="{
                     active: route().current('profile.edit'),
@@ -96,8 +97,8 @@ const { can } = usePermissions();
                 </Link>
             </li>
             <li
-                class="menu-item"
                 v-show="can('read_role')"
+                class="menu-item"
                 :class="{
                     active: route().current('role.index'),
                 }"
@@ -108,8 +109,8 @@ const { can } = usePermissions();
                 </Link>
             </li>
             <li
-                class="menu-item"
                 v-show="can('read_permission')"
+                class="menu-item"
                 :class="{
                     active: route().current('permission.index'),
                 }"

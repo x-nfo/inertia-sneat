@@ -101,8 +101,6 @@ const getBadgeClasses = (roleName) => {
         : 'bg-label-warning';
 };
 
-const { can } = usePermissions();
-
 const openModal = (id) => {
     switch (id) {
         case 'delete':
@@ -164,7 +162,16 @@ onUnmounted(() => {
     closeModal('deleteBulk');
 });
 
-console.log(data.selectedId.length);
+const { isSuperAdmin, hasPermission, can } = usePermissions();
+
+console.log('ini super Admin' + ' ' + isSuperAdmin);
+// console.log('type of super Admin' + ' ' + typeof isSuperAdmin);
+console.log('ini hasPermission ' + ' ' + hasPermission('delete_user'));
+// console.log(
+//     'type of hasPermission ' + ' ' + typeof hasPermission('create_user')
+// );
+// console.log('type of can ' + ' ' + typeof can('create_user'));
+console.log('ini can ' + ' ' + can('delete_user'));
 </script>
 
 <template>
@@ -199,7 +206,7 @@ console.log(data.selectedId.length);
                                 <DeleteBulk
                                     v-show="
                                         data.selectedId.length != 0 &&
-                                        can(['delete_user'])
+                                        can('delete_user')
                                     "
                                     :show="modal.isDeleteBulkOpen"
                                     :selectedId="data.selectedId"
@@ -209,7 +216,7 @@ console.log(data.selectedId.length);
                                 <Create
                                     v-show="
                                         data.selectedId.length == 0 &&
-                                        can(['create_user'])
+                                        can('create_user')
                                     "
                                     :show="offcanvas.isCreateOpen"
                                     :roles="props.roles"
@@ -222,7 +229,7 @@ console.log(data.selectedId.length);
                     <table class="dt-row-grouping table dataTable dtr-column">
                         <thead>
                             <tr>
-                                <td>
+                                <td v-show="can('delete_user')">
                                     <div>
                                         <Checkbox
                                             v-model:checked="data.isMultiple"
@@ -309,7 +316,7 @@ console.log(data.selectedId.length);
                                 v-for="(user, index) in props.users.data"
                                 :key="index"
                             >
-                                <td>
+                                <td v-show="can('delete_user')">
                                     <input
                                         class="form-check-input"
                                         type="checkbox"
@@ -331,15 +338,6 @@ console.log(data.selectedId.length);
                                 </td>
                                 <td>{{ user.created_at }}</td>
                                 <td class="d-flex">
-                                    <div
-                                        v-show="can('read_user')"
-                                        class="btn btn-sm btn-icon dropdown-toggle hide-arrow"
-                                    >
-                                        <i
-                                            class="bx bx-dots-vertical-rounded me-2"
-                                        ></i>
-                                    </div>
-
                                     <Edit
                                         v-show="can('update_user')"
                                         :show="offcanvas.isEditOpen"

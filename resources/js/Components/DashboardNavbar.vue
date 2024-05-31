@@ -1,6 +1,6 @@
 <script setup>
-import { computed, ref, watchEffect } from 'vue';
-import { useDark, useToggle, onClickOutside } from '@vueuse/core';
+import { ref } from 'vue';
+import { useDark, useToggle } from '@vueuse/core';
 import { Link } from '@inertiajs/vue3';
 
 const isDark = useDark({
@@ -11,11 +11,7 @@ const isDark = useDark({
 });
 const toggleDark = useToggle(isDark);
 
-const dropdown = ref(null);
-
 let isShow = ref(false);
-
-onClickOutside(dropdown, () => (isShow.value = false));
 </script>
 
 <template>
@@ -119,7 +115,6 @@ onClickOutside(dropdown, () => (isShow.value = false));
                         </div>
                     </a>
                     <ul
-                        ref="dropdown"
                         class="dropdown-menu dropdown-menu-end"
                         :class="{ show: isShow }"
                     >
